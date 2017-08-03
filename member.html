@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+	<style>
+        body {
+			background-image: url("images/breaking_news.jpg");
+			background-size: 100%;
+		}
+    </style>
+	<title>好康報報</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="css/main2.css" />
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/prettyPhoto.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/animate.css" rel="stylesheet"> 
+	<link href="css/main.css" rel="stylesheet">
+	<link href="css/responsive.css" rel="stylesheet"> 
+	<link rel="shortcut icon" href=""> 
+</head>
+<body>
+
+<div id="wrapper">
+	<header id="header">
+		<div class="navbar navbar-fixed-top" role="banner"> 
+			<div class="container"> 
+				<div class="navbar-header"> 
+					<div class="navbar-brand"><img src="images/lconcords.png" alt="logo"></div> 
+				</div> 
+				
+			</div> 
+		</div><!--/navbar--> 
+		<div class="inner">
+			
+			<nav>
+				<ul>
+					<li><a href="#menu">使用清單</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<nav id="menu">
+		<h2>Menu</h2>
+		<ul>
+			<li><a href="update.html">修改帳號資料</a></li>
+			<li><a onclick="myFun()">登出</a></li>
+			<li><a onclick="myFunction('news')">News</a></li>
+			<li><a onclick="myFunction('international')">International</a></li>
+			<li><a onclick="myFunction('taiwan')">Taiwan</a></li>
+			<li><a onclick="myFunction('finance')">Finance</a></li>
+			<li><a onclick="myFunction('tech')">Technology</a></li>
+			<li><a onclick="myFunction('sport')">Sport</a></li>
+			<li><a onclick="myFunction('entertain')">Entertainment</a></li>
+			<li><a onclick="myFunction('health')">Health</a></li>
+			
+		</ul>
+	</nav>
+	
+	<section id="action"> 
+		<div class="container">
+			<div class="row text-center clearfix">
+				<div class="col-xs-12 ">
+					<h2 class="title-one">News</h2>
+					<p class="blog-heading">There are hundreds of news here. We have 7 categories. Enjoy the news. Thanks.</p>
+				</div>
+			</div> 
+			<div class="row" id="newspaper">
+				
+			</div>
+			
+		</div> 
+	</section>
+	
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+	
+	$(window).load(function(){
+		
+		if(localStorage["id"] != null){
+			console.log(localStorage["id"]);
+		}
+		else{
+			console.log(localStorage["id"]);
+			window.location.replace('login_wrong.html');
+		}	
+	});
+
+	
+	$(function(){
+		var $newspaper = $("#newspaper");
+		var newspaper = "news";
+		
+		$.ajax({
+			url: 'news.php',
+			type : "POST",
+			dataType : 'json',
+			data:{newspaper:newspaper},
+			
+			success:function(data){
+				$("#newspaper").empty(); 
+				$.each(data,function(index,item){ 
+					
+					$newspaper.append(
+						"<div class=\"col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-0 col-md-3 col-md-offset-0\">"+
+							"<div class=\"single-blog\">"+
+								"<img src=\""+item.src+"\" alt=\"\" />"+
+								"<h2>"+item.title+"</h2>"+
+								"<ul class=\"post-meta\">"+
+									"<li><i class=\"fa fa-pencil-square-o\"></i><strong> Posted By:</strong>"+item.company+"</li>"+
+									"<li><i class=\"fa fa-clock-o\"></i><strong> Posted On:</strong>"+item.time+"</li>"+
+								"</ul>"+
+								
+								"<a href=\""+item.link+"\" class=\"btn btn-primary\" data-toggle=\"modal\">Read More</a>"+
+							"</div>"+
+						"</div>"
+					);
+				})
+			},
+			error:function(result) {
+				console.log(JSON.stringify(result));
+			}
+		})
+	})
+	
+});
+
+function myFun(){
+	localStorage.clear();
+	window.location.replace('connect_logout.html');
+	
+	
+}
+
+function myFunction(category){
+	var $newspaper = $("#newspaper");
+	var newspaper = category;
+	
+	$.ajax({
+		url: 'news.php',
+		type : "POST",
+		dataType : 'json',
+		data:{newspaper:newspaper},
+		
+		success:function(data){
+			$("#newspaper").empty(); 
+			$.each(data,function(index,item){ 
+				
+				$newspaper.append(
+					"<div class=\"col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-0 col-md-3 col-md-offset-0\">"+
+						"<div class=\"single-blog\">"+
+							"<img src=\""+item.src+"\" alt=\"\" />"+
+							"<h2>"+item.title+"</h2>"+
+							"<ul class=\"post-meta\">"+
+								"<li><i class=\"fa fa-pencil-square-o\"></i><strong> Posted By:</strong>"+item.company+"</li>"+
+								"<li><i class=\"fa fa-clock-o\"></i><strong> Posted On:</strong>"+item.time+"</li>"+
+							"</ul>"+
+							
+							"<a href=\""+item.link+"\" class=\"btn btn-primary\" data-toggle=\"modal\">Read More</a>"+
+						"</div>"+
+					"</div>"
+				);
+			})
+		},
+		error:function(result) {
+			console.log(JSON.stringify(result));
+		}
+	})
+}
+</script>
+
+
+
+
+	
+
+<script src="js/skel.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/main.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script> 
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/smoothscroll.js"></script> 
+<script type="text/javascript" src="js/jquery.isotope.min.js"></script>
+<script type="text/javascript" src="js/jquery.prettyPhoto.js"></script> 
+<script type="text/javascript" src="js/jquery.parallax.js"></script> 
+
+</body>
+</html>
